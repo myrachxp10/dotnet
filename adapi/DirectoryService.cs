@@ -27,8 +27,7 @@ namespace adapi
         private static string _pwd = ConfigurationManager.AppSettings["_pwd"].ToString();
 
         private DirectoryEntry myDirectory = new DirectoryEntry(sPath, _uid, _pwd); // pass the user account and password for your Enterprise admin.
-
-
+        
         public string GetUserInfo(string inSAM, string inType, string attr)
         {
             // Public Function GetUserInfo(ByVal inSAM As String, ByVal inType As String) As String

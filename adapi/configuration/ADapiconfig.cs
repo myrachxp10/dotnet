@@ -16,14 +16,6 @@ namespace adapi.Configuration
             config.MapHttpAttributeRoutes();
             config.Formatters.Clear();
             config.Formatters.Add(new JsonMediaTypeFormatter());
-            
-            /*config.Routes.MapHttpRoute(
-                name: "ADApi",
-                routeTemplate: "api/{controller}/{id}",
-                defaults: new { id = RouteParameter.Optional }
-            );*/
-            //config.Routes.MapHttpRoute("DefaultApiWithAction", "{controller}/{action}");
-
         }
     }
 }
