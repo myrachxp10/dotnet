@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Configuration;
 using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
+
 
 namespace KECForm
 {
@@ -17,7 +19,10 @@ namespace KECForm
 
         private void button1_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Camera not detected");
+            MessageBox.Show(ConfigurationManager.AppSettings["_uid"].ToString());
+            Configuration config = ConfigurationManager.OpenExeConfiguration(Application.ExecutablePath);
+            config.AppSettings.Settings["licenseKey"].Value = textBox1.Text;
+            config.Save(ConfigurationSaveMode.Modified);
         }
     }
 }
