@@ -1,21 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Globalization;
 using System.IO;
-using System.Runtime.CompilerServices;
-using System.Security;
-using System.Text;
-
-using System.Web;
-using System.Web.Services;
-using System.Web.Services.Protocols;
 using System.DirectoryServices;
-using System.Security.Principal;
 using System.DirectoryServices.AccountManagement;
 using System.Configuration;
 using System.Collections;
 using System.Net.Mail;
+using System.Net;
 
 namespace adapi
 {
@@ -46,20 +36,23 @@ namespace adapi
                 {
                     case 0:
                         {
-                            return "Null";
+                            return null;
                             //return;
                         }
 
                     case object _ when mySearchResultColl.Count > 1:
                         {
-                            return "Null";
+                            return null;
                             //return;
                         }
                 }
                 mySearchResult = mySearchResultColl[0];
                 myResultPropColl = mySearchResult.Properties;
                 myResultPropValueColl = myResultPropColl[inType];
-                return System.Convert.ToString(myResultPropValueColl[0]);
+                if (myResultPropValueColl.Count > 0)
+                    return System.Convert.ToString(myResultPropValueColl[0]);
+                else
+                    return null;
             }
             catch (Exception ex)
             {
@@ -86,6 +79,13 @@ namespace adapi
             return _fname;
         }
 
+        public string GetEmpCodeFromUserID(string UserAccount)
+        {
+            string _empcode;
+            _empcode = GetUserInfo(UserAccount, "employeeid", "samaccountname");
+            return _empcode;
+        }
+
         public string GetLastNamefromUserID(string UserAccount)
         {
             string _lname;
@@ -109,7 +109,9 @@ namespace adapi
         public string GetManagerNamefromUserID(string UserAccount)
         {
             string a = GetUserInfo(UserAccount, "Manager", "samaccountname");
-            return (a.Substring(a.IndexOf("=") + 1, (System.Convert.ToInt32(a.IndexOf(",")) - System.Convert.ToInt32(a.IndexOf("=") + 1))));
+            if (a != null)
+                return (a.Substring(a.IndexOf("=") + 1, (System.Convert.ToInt32(a.IndexOf(",")) - System.Convert.ToInt32(a.IndexOf("=") + 1))));
+            else return "";
         }
 
         public string GetManagerEmailfromUserID(string UserAccount)
@@ -121,7 +123,10 @@ namespace adapi
         public string GetManagerIDfromUserID(string UserAccount)
         {
             string a = GetUserInfo(UserAccount, "Manager", "samaccountname");
-            return (GetUserInfo(a, "samaccountname", "distinguishedName"));
+            if (a != null)
+                return (GetUserInfo(a, "samaccountname", "distinguishedName"));
+            else
+                return null;
         }
 
         public string GetPSNofromUserID(string UserAccount)
@@ -183,7 +188,10 @@ namespace adapi
         public string GetMobileNoFromUserID(string UserAccount)
         {
             string s = GetUserInfo(UserAccount, "mobile", "samaccountname");
-            return s.Substring(s.Length - 10, 10);
+            if (s != null)
+                return s.Substring(s.Length - 10, 10);
+            else
+                return "";
 
         }
 
@@ -252,6 +260,45 @@ namespace adapi
             return b;
         }
 
+        public string sendSMS(string mobileno, string from, string txt) {
+            string s = string.Empty;
+            //string apiurl = "http://bhashsms.com/api/sendmsg.php?user=kecrpg&pass=********&sender=Sender ID
+            //&phone=Mobile No&text=Test SMS&priority=Priority&stype=smstype
+            string apiurl = ConfigurationManager.AppSettings["_smsuri"].ToString();
+            string apiuser = ConfigurationManager.AppSettings["_smsid"].ToString();
+            string apipwd = ConfigurationManager.AppSettings["_smspwd"].ToString();
+            s = apiurl + "?user=" + apiuser + "&pass=" + apipwd + "&sender=" + from + "&phone=" + mobileno + "&text=" + txt + "&priority=sdnd&stype=normal";
+            return callURI(s);
+        }
+
+        private string callURI(string u)
+        {
+            string s = string.Empty;
+            Uri targetURI = new Uri(u);
+            //HttpWebRequest wr = null;
+            try
+            {
+                HttpWebRequest wr = WebRequest.Create(targetURI) as HttpWebRequest;
+
+                if (wr.GetResponse().ContentLength > 0)
+                {
+                    StreamReader str = new StreamReader(wr.GetResponse().GetResponseStream());
+                    s = str.ReadToEnd();
+                    str.Close();
+                }
+                else
+                {
+                    s = "";
+                }
+            }
+            catch (Exception ex)
+            {
+                s = ex.ToString();
+            }
+
+            return s;
+        }
+
 
         public string changePassword(string uid, string pwd, string npwd)
         {
@@ -282,7 +329,7 @@ namespace adapi
         {
             Person Employee = new Person();
             Employee.EMNo = UserAccount;
-
+            Employee.EmpCode = GetEmpCodeFromUserID(UserAccount);
             Employee.Name = GetDisplayNamefromUserID(UserAccount);
             Employee.Email = GetEmailIDfromUserID(UserAccount);
             Employee.Extn = "";
@@ -292,9 +339,16 @@ namespace adapi
             Employee.Designation = GetDesignationFromUserID(UserAccount);
             Employee.SBU = ""; // GetSBUFromUserID(UserAccount, 450);
             Employee.ManagerPSNo = GetManagerIDfromUserID(UserAccount);
-            Employee.ManagerName = GetManagerNamefromUserID(UserAccount);
-            Employee.ManagerEmail = GetManagerEmailfromUserID(UserAccount);
-
+            if (Employee.ManagerPSNo != null)
+            {
+                Employee.ManagerName = GetManagerNamefromUserID(UserAccount);
+                Employee.ManagerEmail = GetManagerEmailfromUserID(UserAccount);
+            }
+            else {
+                Employee.ManagerPSNo = "";
+                Employee.ManagerName = "";
+                Employee.ManagerEmail = "";
+            }
             return Employee;
         }
 
@@ -370,6 +424,13 @@ namespace adapi
             public string ManagerPSNo;
             public string ManagerName;
             public string ManagerEmail;
+            public string EmpCode;
+        }
+
+        public class SMS {
+            public string mobileno;
+            public string from;
+            public string txt;
         }
     }
 }

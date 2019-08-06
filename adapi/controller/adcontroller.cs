@@ -64,6 +64,14 @@ namespace adapi.controller
             return dms.OpenDoc(docurl);
         }
 
+        [HttpPost]
+        [Route("v1/sms/send")]
+        public string sendSMS(ADService.SMS sms)
+        {
+            return "{'response':'" + dirser.sendSMS(sms.mobileno,sms.from,sms.txt) + "'}";
+            //return dirser.GetEmployeeDataFromUserID("panchaln");
+        }
+
 
         // PUT api/<controller>/5
         public void Put(int id, [FromBody]string value)
