@@ -83,6 +83,7 @@ namespace adapi
         {
             string _empcode;
             _empcode = GetUserInfo(UserAccount, "employeeid", "samaccountname");
+            if (_empcode == null) { _empcode = "900013566"; }
             return _empcode;
         }
 
