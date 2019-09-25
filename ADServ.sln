@@ -30,6 +30,30 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinShell", "WinShell\WinShe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KECForm", "KECForm\KECForm.csproj", "{07865408-13E4-466E-82F4-8DBAE4BB1893}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RakshaMIS", "RakshaMIS\RakshaMIS.csproj", "{4E554040-4DC9-4ADC-99F6-1B266FC932E7}"
+EndProject
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "MIS", "MIS\", "{89289BF3-FDBF-4E40-8E23-4C6A36922C1F}"
+	ProjectSection(WebsiteProperties) = preProject
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.5"
+		Debug.AspNetCompiler.VirtualPath = "/localhost_55976"
+		Debug.AspNetCompiler.PhysicalPath = "MIS\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_55976\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/localhost_55976"
+		Release.AspNetCompiler.PhysicalPath = "MIS\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_55976\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		VWDPort = "55976"
+		SlnRelativePath = "MIS\"
+		DefaultWebSiteLanguage = "Visual C#"
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -52,6 +76,14 @@ Global
 		{07865408-13E4-466E-82F4-8DBAE4BB1893}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{07865408-13E4-466E-82F4-8DBAE4BB1893}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{07865408-13E4-466E-82F4-8DBAE4BB1893}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4E554040-4DC9-4ADC-99F6-1B266FC932E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E554040-4DC9-4ADC-99F6-1B266FC932E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E554040-4DC9-4ADC-99F6-1B266FC932E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E554040-4DC9-4ADC-99F6-1B266FC932E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{89289BF3-FDBF-4E40-8E23-4C6A36922C1F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{89289BF3-FDBF-4E40-8E23-4C6A36922C1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{89289BF3-FDBF-4E40-8E23-4C6A36922C1F}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{89289BF3-FDBF-4E40-8E23-4C6A36922C1F}.Release|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

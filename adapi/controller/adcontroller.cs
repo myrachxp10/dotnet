@@ -19,6 +19,7 @@ namespace adapi.controller
         public ADService.Person Get(string user)
         {          
             return dirser.GetEmployeeDataFromUserID(user);
+            //return dirser.GetEmpDataFromUserID(user);
         }
 
         [HttpGet]

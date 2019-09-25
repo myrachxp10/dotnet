@@ -6,6 +6,8 @@ using System.Configuration;
 using System.Collections;
 using System.Net.Mail;
 using System.Net;
+using unirest_net.http;
+using System.Data.SqlClient;
 
 namespace adapi
 {
@@ -224,10 +226,37 @@ namespace adapi
                 MailMessage mm = new MailMessage(_from, _to);
 
                 mm.Subject = _subject;
+
                 if (!string.IsNullOrEmpty(_ccto.Trim()))
-                    mm.CC.Add(new MailAddress(_ccto));
+                {
+                    if (_ccto.Contains(","))
+                    {
+                        string[] cc = _ccto.Split(',');
+                        foreach (string ccto in cc)
+                        {
+                            mm.CC.Add(new MailAddress(ccto));
+                        }
+                    }
+                    else
+                    {
+                        mm.CC.Add(new MailAddress(_ccto));
+                    }
+                }
                 if (!string.IsNullOrEmpty(_bccto.Trim()))
-                    mm.Bcc.Add(new MailAddress("panchaln@kecrpg.com"));
+                {
+                    if (_bccto.Contains(","))
+                    {
+                        string[] bcc = _bccto.Split(',');
+                        foreach (string bccto in bcc)
+                        {
+                            mm.Bcc.Add(new MailAddress(bccto));
+                        }
+                    }
+                    else
+                    {
+                        mm.Bcc.Add(new MailAddress(_bccto));
+                    }
+                }
                 
                 mm.Body = _header + "<BR>" + _body + "<BR>" + _sign;
                 mm.IsBodyHtml = true;
@@ -245,6 +274,7 @@ namespace adapi
             return rval;
         }
 
+        
 
         public bool getAuthentication(string uid, string pwd)
         {
@@ -321,10 +351,59 @@ namespace adapi
                 s = ex.Message;
             }
 
-
             return s;
         }
 
+        public Person GetEmpDataFromUserID(string UserAccount)
+        {
+            Person Employee = new Person();
+            string s = "SELECT [UserID],[UserName] DisplayName,[SBU] SBU,[Location] Location ,[Region] Region ,[Pay Grade  Name] PayGrade ," +
+                "[Job Code Job Title] Designation ,[Manager Employee ID] ManagerPSNo,[Manager Name] ManagerName ,[UserEmail] Email ,[UserMobileNo]  Mobile" +
+                "  FROM KECEmployees where UserEmail ='"+UserAccount+"@kecrpg.com'";
+            int i = 0;
+            try
+            {
+                SqlConnection con = new SqlConnection();
+                con.ConnectionString = ConfigurationManager.ConnectionStrings["Raksha"].ConnectionString;
+                con.Open();
+                SqlCommand cmd = new SqlCommand(s, con);
+                SqlDataReader dr = cmd.ExecuteReader();
+                
+                while (dr.Read())
+                {
+                    //devices.Add((String)dr["DeviceID"]);
+                    Employee.EMNo = UserAccount;
+                    Employee.EmpCode = ((double) dr["UserID"]).ToString();
+                    Employee.Name = (string)dr["DisplayName"]; ;
+                    Employee.Email = (string)dr["Email"]; ;
+                    Employee.Extn = "";
+                    Employee.Mobile = (string)dr["Mobile"]; ;
+                    Employee.DeptCode = GetDepartmentFromUserID(UserAccount);
+                    Employee.DeptName = GetDepartmentNameFromUserID(UserAccount);
+                    Employee.Designation = (string)dr["Designation"]; ;
+                    Employee.SBU = (string)dr["SBU"]; 
+                    Employee.ManagerPSNo = (string)dr["ManagerPSNo"]; ;
+                    if (Employee.ManagerPSNo != null)
+                    {
+                        Employee.ManagerName = (string)dr["ManagerPSNo"]; ;
+                        Employee.ManagerEmail = GetManagerEmailfromUserID(UserAccount);
+                    }
+                    else
+                    {
+                        Employee.ManagerPSNo = "";
+                        Employee.ManagerName = "";
+                        Employee.ManagerEmail = "";
+                    }
+                    i++;
+                }
+                con.Close();
+            }
+            catch (Exception ex)
+            {
+                //MessageBox.Show(ex.ToString());
+            }
+            return Employee;
+        }
 
         public Person GetEmployeeDataFromUserID(string UserAccount)
         {
