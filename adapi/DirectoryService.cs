@@ -85,7 +85,11 @@ namespace adapi
         {
             string _empcode;
             _empcode = GetUserInfo(UserAccount, "employeeid", "samaccountname");
-            if (_empcode == null) { _empcode = "900013566"; }
+            if (_empcode == null) {
+                _empcode=GetEmpCodeFromUserNameSF(GetDisplayNamefromUserID(UserAccount));
+            }
+            if (_empcode == null) {
+                _empcode = "900013566"; }
             return _empcode;
         }
 
@@ -192,7 +196,9 @@ namespace adapi
         {
             string s = GetUserInfo(UserAccount, "mobile", "samaccountname");
             if (s != null)
-                return s.Substring(s.Length - 10, 10);
+                if (s.Length > 10)
+                    return s.Substring(s.Length - 10, 10);
+                else return s;
             else
                 return "";
 
@@ -354,6 +360,24 @@ namespace adapi
             return s;
         }
 
+        public string GetEmpCodeFromUserNameSF(string UserName) {
+            string s = null;
+            string sql = "select UserID from KECEmployees where UserName ='" + UserName +"'";
+            try {
+                SqlConnection con = new SqlConnection();
+                con.ConnectionString = ConfigurationManager.ConnectionStrings["Raksha"].ConnectionString;
+                con.Open();
+                SqlCommand cmd = new SqlCommand(sql, con);
+                SqlDataReader dr = cmd.ExecuteReader();
+                while (dr.Read()) {
+                    s = (string)dr["UserID"].ToString();
+                }
+                con.Close();
+            } catch (Exception ex) {
+                s = null;
+            }
+            return s ;
+        }
         public Person GetEmpDataFromUserID(string UserAccount)
         {
             Person Employee = new Person();
@@ -408,8 +432,9 @@ namespace adapi
         public Person GetEmployeeDataFromUserID(string UserAccount)
         {
             Person Employee = new Person();
+
             Employee.EMNo = UserAccount;
-            Employee.EmpCode = GetEmpCodeFromUserID(UserAccount);
+            
             Employee.Name = GetDisplayNamefromUserID(UserAccount);
             Employee.Email = GetEmailIDfromUserID(UserAccount);
             Employee.Extn = "";
@@ -418,6 +443,7 @@ namespace adapi
             Employee.DeptName = GetDepartmentNameFromUserID(UserAccount);
             Employee.Designation = GetDesignationFromUserID(UserAccount);
             Employee.SBU = ""; // GetSBUFromUserID(UserAccount, 450);
+            Employee.EmpCode = GetEmpCodeFromUserID(UserAccount);
             Employee.ManagerPSNo = GetManagerIDfromUserID(UserAccount);
             if (Employee.ManagerPSNo != null)
             {

@@ -7,6 +7,8 @@ using Microsoft.SharePoint.Client;
 using System.Configuration;
 using System.IO;
 using System.Net;
+using System.Drawing;
+using static System.Net.WebRequestMethods;
 
 namespace adapi
 {
@@ -20,7 +22,24 @@ namespace adapi
             return UploadToDMS(doc.fileByteString, doc._docLib, doc.folderName, doc.fileName);
         }
 
-        public string UploadToDMS(string fileByteString, string _docLib, string folderName, string fileName)
+        public string UploadToDMSLocal(string fileByteString, string _docLib, string folderName, string fileName)
+        {
+
+            string rval = string.Empty;
+            string docfolder = ConfigurationManager.AppSettings["localDocPath"].ToString();
+            byte[] tempBytes = Convert.FromBase64String(fileByteString);
+            try
+            {
+                System.IO.File.WriteAllBytes(docfolder + "\\" + fileName, tempBytes);
+                rval = @"https:\\digital.kecrpg.com\adapi\Uploads\" + fileName;
+            }
+            catch (Exception ex) {
+                rval = ex.ToString();
+            }
+            return rval;
+
+        }
+            public string UploadToDMS(string fileByteString, string _docLib, string folderName, string fileName)
         {
 
             string rval = string.Empty;
@@ -30,31 +49,49 @@ namespace adapi
             {
                 SecureString passWord = new SecureString();
                 foreach (char c in _pwd.ToCharArray()) passWord.AppendChar(c);
-                clientContext.Credentials = new SharePointOnlineCredentials(_uid, passWord);
-                List list = clientContext.Web.Lists.GetByTitle(_docLib);
-                clientContext.Load(list.RootFolder);
-                var folders = list.RootFolder.Folders;
-                string docURL = spURL + "/" + _docLib + "/" + folderName + "/" + fileName;
-                clientContext.Load(folders);
-                clientContext.ExecuteQuery();
-                folders.Add(folderName);
-                clientContext.ExecuteQuery();
-
-                using (Stream stream = new MemoryStream(tempBytes))
-                {
-                    try
+                try {
+                    clientContext.Credentials = new SharePointOnlineCredentials(_uid, passWord);
+                    List list = clientContext.Web.Lists.GetByTitle(_docLib);
+                    clientContext.Load(list.RootFolder);
+                    var folders = list.RootFolder.Folders;
+                    string docURL = spURL + "/" + _docLib + "/" + folderName + "/" + fileName;
+                    clientContext.Load(folders);
+                    clientContext.ExecuteQuery();
+                    folders.Add(folderName);
+                    clientContext.ExecuteQuery();
+                    using (Stream stream = new MemoryStream(tempBytes))
                     {
-                        Microsoft.SharePoint.Client.File.SaveBinaryDirect(clientContext, list.RootFolder.ServerRelativeUrl.ToString() + "/" + folderName + "/" + fileName, stream, true);
-                        rval = docURL;
+                        try
+                        {
+                            Microsoft.SharePoint.Client.File.SaveBinaryDirect(clientContext, list.RootFolder.ServerRelativeUrl.ToString() + "/" + folderName + "/" + fileName, stream, true);
+                            rval = docURL;
+                        }
+                        catch (Exception ex)
+                        {
+                            rval = "Error occured: " + ex.ToString();
+                        }
                     }
-                    catch (Exception ex)
-                    {
-                        rval = "Error occured: " + ex.ToString();
-                    }
-
+                }
+                catch (Exception e) {
+                    rval = UploadToDMSLocal(fileByteString, _docLib, folderName, fileName);
                 }
             }
             return rval;
+        }
+
+        public string Tobase64Str(string Path) {
+            using (Image image = Image.FromFile(Path))
+            {
+                using (MemoryStream m = new MemoryStream())
+                {
+                    image.Save(m, image.RawFormat);
+                    byte[] imageBytes = m.ToArray();
+
+                    // Convert byte[] to Base64 String
+                    string base64String = Convert.ToBase64String(imageBytes);
+                    return base64String;
+                }
+            }
         }
 
         public string DeleteDOC(string _docURL)
