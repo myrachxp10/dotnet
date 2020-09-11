@@ -13,9 +13,17 @@ public partial class Login : System.Web.UI.Page
     protected void Page_Load(object sender, EventArgs e)
     {
         try {
-            string s = Request.QueryString["error"];
-            lblMessage.Text = s;
-            dvMessage.Visible = true;
+            bool checkauth = (bool)HttpContext.Current.Session["authstat"];
+            if (checkauth)
+            {
+                Response.Redirect("./Default.aspx");
+            }
+            else
+            {
+                string s = Request.QueryString["error"];
+                lblMessage.Text = s;
+                dvMessage.Visible = true;
+            }
         }
         catch (Exception ex) {
 

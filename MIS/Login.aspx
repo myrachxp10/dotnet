@@ -27,7 +27,7 @@
         Login</h2>
     <label for="txtUsername">
         Username</label>
-    <asp:TextBox ID="txtUsername" runat="server" CssClass="form-control"  placeholder="Enter KEC Email Address."     required />example: xyz@kecrpg.com
+    <asp:TextBox ID="txtUsername" runat="server" CssClass="form-control"  placeholder="Enter KEC Email Address."   required />example: xyz@kecrpg.com
     <br />
     <label for="txtPassword">
         Password</label>
@@ -40,7 +40,7 @@
     <br />
     <br />
     <div id="dvMessage" runat="server" visible="false" class="alert alert-danger">
-        <strong>Error!</strong>
+        
         <asp:Label ID="lblMessage" runat="server" />
     </div>
 </div>

@@ -1,0 +1,942 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="SafetyAppDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="tb_business_unit">
+          <Key>
+            <PropertyRef Name="BusinessUnitID" />
+          </Key>
+          <Property Name="BusinessUnitID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BusinessUnitName" Type="varchar" MaxLength="500" />
+          <Property Name="BusinessUnitCategory" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="tb_ehs_assessment_score">
+          <Key>
+            <PropertyRef Name="EhsAssesmentId" />
+          </Key>
+          <Property Name="EhsAssesmentId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BusinessUnitID" Type="int" />
+          <Property Name="RegionID" Type="int" />
+          <Property Name="ProjectID" Type="int" />
+          <Property Name="AssessmentDate" Type="datetime" />
+          <Property Name="AssessmentBy" Type="int" Nullable="false" />
+          <Property Name="Location" Type="varchar" MaxLength="500" />
+          <Property Name="NoOfWorkMan" Type="int" />
+          <Property Name="ProjectManagerID" Type="int" Nullable="false" />
+          <Property Name="RegionalManagerID" Type="int" Nullable="false" />
+          <Property Name="PCH" Type="int" Nullable="false" />
+          <Property Name="ScorecardID" Type="int" />
+          <Property Name="RmEHSID" Type="int" />
+          <Property Name="CorpEHSID" Type="int" />
+          <Property Name="RequirementStatusID" Type="int" />
+          <Property Name="Status" Type="int" />
+        </EntityType>
+        <EntityType Name="tb_ehs_assessment_score_neg">
+          <Key>
+            <PropertyRef Name="EhsNegScoreId" />
+          </Key>
+          <Property Name="EhsNegScoreId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EhsAssesmentId" Type="int" />
+          <Property Name="IrType" Type="varchar" MaxLength="500" />
+          <Property Name="NegativeMarking" Type="int" />
+          <Property Name="ActualDeduction" Type="int" />
+          <Property Name="Marking" Type="int" />
+          <Property Name="Remark" Type="varchar" MaxLength="500" />
+        </EntityType>
+        <EntityType Name="tb_ehs_assessment_score_transaction">
+          <Key>
+            <PropertyRef Name="EhsAssesmentTransactionID" />
+          </Key>
+          <Property Name="EhsAssesmentTransactionID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EhsAssesmentID" Type="int" />
+          <Property Name="RequirementID" Type="int" />
+          <Property Name="AreaID" Type="int" />
+          <Property Name="ParamID" Type="int" />
+          <Property Name="IsApplicable" Type="bit" />
+          <Property Name="ApplicableWeightage" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="PercentageCompliance" Type="varchar" MaxLength="500" />
+          <Property Name="Compliance" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Remark" Type="varchar" MaxLength="500" />
+          <Property Name="AssessorApplicableWeightage" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="AssessorPercentageCompliance" Type="varchar" MaxLength="500" />
+          <Property Name="AccessorCompliance" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="AccessorRemark" Type="varchar" MaxLength="50" />
+          <Property Name="Assessor1ApplicableWeightage" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Assessor1PercentageCompliance" Type="varchar" MaxLength="500" />
+          <Property Name="Accessor1Compliance" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Accessor1Remark" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="tb_ehs_req_area">
+          <Key>
+            <PropertyRef Name="AreaId" />
+          </Key>
+          <Property Name="AreaId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RequirementId" Type="int" Nullable="false" />
+          <Property Name="SrNo" Type="decimal" Precision="5" Scale="2" />
+          <Property Name="AreaName" Type="varchar" MaxLength="500" />
+          <Property Name="TotalWeightagePerCriteria" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="ScoreCardID" Type="int" />
+        </EntityType>
+        <EntityType Name="tb_ehs_req_area_praram">
+          <Key>
+            <PropertyRef Name="ParamId" />
+          </Key>
+          <Property Name="ParamId" Type="int" Nullable="false" />
+          <Property Name="AreaId" Type="int" />
+          <Property Name="RequirementId" Type="int" />
+          <Property Name="ParameterName" Type="varchar" MaxLength="500" />
+          <Property Name="SubWeightagePerCriteria" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="ScoreCardID" Type="int" />
+        </EntityType>
+        <EntityType Name="tb_ehs_requirement_master">
+          <Key>
+            <PropertyRef Name="RequirementId" />
+          </Key>
+          <Property Name="RequirementId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RequirementSequenceNo" Type="int" />
+          <Property Name="RequirementName" Type="varchar" MaxLength="500" />
+          <Property Name="ScoreCardID" Type="int" />
+        </EntityType>
+        <EntityType Name="tb_ehs_scorecard_master">
+          <Key>
+            <PropertyRef Name="ScoreCardID" />
+          </Key>
+          <Property Name="ScoreCardID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ScoreCardName" Type="varchar" MaxLength="500" />
+          <Property Name="ApplicableBusinessUnits" Type="varchar(max)" />
+        </EntityType>
+        <EntityType Name="tb_project">
+          <Key>
+            <PropertyRef Name="ProjectID" />
+          </Key>
+          <Property Name="ProjectID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProjectCode" Type="varchar" MaxLength="20" />
+          <Property Name="ProjectName" Type="varchar" MaxLength="500" />
+          <Property Name="BusinessUnitID" Type="int" />
+          <Property Name="RegionID" Type="int" />
+          <Property Name="Location" Type="varchar" MaxLength="250" />
+        </EntityType>
+        <EntityType Name="tb_region">
+          <Key>
+            <PropertyRef Name="RegionID" />
+          </Key>
+          <Property Name="RegionID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RegionName" Type="varchar" MaxLength="500" />
+          <Property Name="BusinessUnitID" Type="int" />
+          <Property Name="RM_BusinessUnit" Type="int" />
+          <Property Name="RM_Safety" Type="int" />
+        </EntityType>
+        <EntityType Name="tb_user_profile">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="UserType" Type="int" />
+          <Property Name="UserEmail" Type="varchar" MaxLength="320" />
+          <Property Name="UserMobileNo" Type="varchar" MaxLength="15" />
+          <Property Name="UserProfilePic" Type="varchar" MaxLength="500" />
+          <Property Name="UserPassword" Type="varchar" MaxLength="50" />
+          <Property Name="UserBusinessUnitID" Type="int" />
+          <Property Name="UserRegionID" Type="int" />
+          <Property Name="UserProjectID" Type="int" />
+          <Property Name="UserStatus" Type="int" />
+          <Property Name="UserLastLoginOn" Type="datetime" />
+          <Property Name="UserProfileLastModifyOn" Type="datetime" />
+          <Property Name="UserVerificationCode" Type="varchar" MaxLength="50" />
+          <Property Name="UserCreatedBy" Type="int" />
+          <Property Name="UserCreatedOn" Type="datetime" />
+          <Property Name="UserApprovedBY" Type="int" />
+          <Property Name="UserApprovedOn" Type="datetime" />
+          <Property Name="UserSignupOTP" Type="varchar" MaxLength="10" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="50" />
+          <Property Name="TncAcceptedOn" Type="datetime" />
+        </EntityType>
+        <Association Name="FK_tb_ehs_assessment_score_neg_tb_ehs_assessment_score">
+          <End Role="tb_ehs_assessment_score" Type="Self.tb_ehs_assessment_score" Multiplicity="0..1" />
+          <End Role="tb_ehs_assessment_score_neg" Type="Self.tb_ehs_assessment_score_neg" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tb_ehs_assessment_score">
+              <PropertyRef Name="EhsAssesmentId" />
+            </Principal>
+            <Dependent Role="tb_ehs_assessment_score_neg">
+              <PropertyRef Name="EhsAssesmentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tb_ehs_assessment_score_transaction_tb_ehs_assessment_score">
+          <End Role="tb_ehs_assessment_score" Type="Self.tb_ehs_assessment_score" Multiplicity="0..1" />
+          <End Role="tb_ehs_assessment_score_transaction" Type="Self.tb_ehs_assessment_score_transaction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tb_ehs_assessment_score">
+              <PropertyRef Name="EhsAssesmentId" />
+            </Principal>
+            <Dependent Role="tb_ehs_assessment_score_transaction">
+              <PropertyRef Name="EhsAssesmentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tb_ehs_assessment_score_transaction_tb_ehs_req_area">
+          <End Role="tb_ehs_req_area" Type="Self.tb_ehs_req_area" Multiplicity="0..1" />
+          <End Role="tb_ehs_assessment_score_transaction" Type="Self.tb_ehs_assessment_score_transaction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tb_ehs_req_area">
+              <PropertyRef Name="AreaId" />
+            </Principal>
+            <Dependent Role="tb_ehs_assessment_score_transaction">
+              <PropertyRef Name="AreaID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tb_ehs_assessment_score_transaction_tb_ehs_req_area_praram">
+          <End Role="tb_ehs_req_area_praram" Type="Self.tb_ehs_req_area_praram" Multiplicity="0..1" />
+          <End Role="tb_ehs_assessment_score_transaction" Type="Self.tb_ehs_assessment_score_transaction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tb_ehs_req_area_praram">
+              <PropertyRef Name="ParamId" />
+            </Principal>
+            <Dependent Role="tb_ehs_assessment_score_transaction">
+              <PropertyRef Name="ParamID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tb_ehs_assessment_score_transaction_tb_ehs_requirement_master">
+          <End Role="tb_ehs_requirement_master" Type="Self.tb_ehs_requirement_master" Multiplicity="0..1" />
+          <End Role="tb_ehs_assessment_score_transaction" Type="Self.tb_ehs_assessment_score_transaction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tb_ehs_requirement_master">
+              <PropertyRef Name="RequirementId" />
+            </Principal>
+            <Dependent Role="tb_ehs_assessment_score_transaction">
+              <PropertyRef Name="RequirementID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tb_ehs_req_area_praram_tb_ehs_req_area">
+          <End Role="tb_ehs_req_area" Type="Self.tb_ehs_req_area" Multiplicity="0..1" />
+          <End Role="tb_ehs_req_area_praram" Type="Self.tb_ehs_req_area_praram" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tb_ehs_req_area">
+              <PropertyRef Name="AreaId" />
+            </Principal>
+            <Dependent Role="tb_ehs_req_area_praram">
+              <PropertyRef Name="AreaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tb_ehs_req_area_praram_tb_ehs_requirement_master">
+          <End Role="tb_ehs_requirement_master" Type="Self.tb_ehs_requirement_master" Multiplicity="0..1" />
+          <End Role="tb_ehs_req_area_praram" Type="Self.tb_ehs_req_area_praram" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tb_ehs_requirement_master">
+              <PropertyRef Name="RequirementId" />
+            </Principal>
+            <Dependent Role="tb_ehs_req_area_praram">
+              <PropertyRef Name="RequirementId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tb_ehs_req_area_tb_ehs_requirement_master">
+          <End Role="tb_ehs_requirement_master" Type="Self.tb_ehs_requirement_master" Multiplicity="1" />
+          <End Role="tb_ehs_req_area" Type="Self.tb_ehs_req_area" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tb_ehs_requirement_master">
+              <PropertyRef Name="RequirementId" />
+            </Principal>
+            <Dependent Role="tb_ehs_req_area">
+              <PropertyRef Name="RequirementId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tb_project_tb_business_unit">
+          <End Role="tb_business_unit" Type="Self.tb_business_unit" Multiplicity="0..1" />
+          <End Role="tb_project" Type="Self.tb_project" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tb_business_unit">
+              <PropertyRef Name="BusinessUnitID" />
+            </Principal>
+            <Dependent Role="tb_project">
+              <PropertyRef Name="BusinessUnitID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tb_project_tb_region">
+          <End Role="tb_region" Type="Self.tb_region" Multiplicity="0..1" />
+          <End Role="tb_project" Type="Self.tb_project" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tb_region">
+              <PropertyRef Name="RegionID" />
+            </Principal>
+            <Dependent Role="tb_project">
+              <PropertyRef Name="RegionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="spMisReportDataByID" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="MisReportID" Type="int" Mode="In" />
+        </Function>
+        <EntityContainer Name="SafetyAppDBModelStoreContainer">
+          <EntitySet Name="tb_business_unit" EntityType="Self.tb_business_unit" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tb_ehs_assessment_score" EntityType="Self.tb_ehs_assessment_score" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tb_ehs_assessment_score_neg" EntityType="Self.tb_ehs_assessment_score_neg" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tb_ehs_assessment_score_transaction" EntityType="Self.tb_ehs_assessment_score_transaction" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tb_ehs_req_area" EntityType="Self.tb_ehs_req_area" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tb_ehs_req_area_praram" EntityType="Self.tb_ehs_req_area_praram" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tb_ehs_requirement_master" EntityType="Self.tb_ehs_requirement_master" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tb_ehs_scorecard_master" EntityType="Self.tb_ehs_scorecard_master" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tb_project" EntityType="Self.tb_project" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tb_region" EntityType="Self.tb_region" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tb_user_profile" EntityType="Self.tb_user_profile" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_tb_ehs_assessment_score_neg_tb_ehs_assessment_score" Association="Self.FK_tb_ehs_assessment_score_neg_tb_ehs_assessment_score">
+            <End Role="tb_ehs_assessment_score" EntitySet="tb_ehs_assessment_score" />
+            <End Role="tb_ehs_assessment_score_neg" EntitySet="tb_ehs_assessment_score_neg" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tb_ehs_assessment_score_transaction_tb_ehs_assessment_score" Association="Self.FK_tb_ehs_assessment_score_transaction_tb_ehs_assessment_score">
+            <End Role="tb_ehs_assessment_score" EntitySet="tb_ehs_assessment_score" />
+            <End Role="tb_ehs_assessment_score_transaction" EntitySet="tb_ehs_assessment_score_transaction" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tb_ehs_assessment_score_transaction_tb_ehs_req_area" Association="Self.FK_tb_ehs_assessment_score_transaction_tb_ehs_req_area">
+            <End Role="tb_ehs_req_area" EntitySet="tb_ehs_req_area" />
+            <End Role="tb_ehs_assessment_score_transaction" EntitySet="tb_ehs_assessment_score_transaction" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tb_ehs_assessment_score_transaction_tb_ehs_req_area_praram" Association="Self.FK_tb_ehs_assessment_score_transaction_tb_ehs_req_area_praram">
+            <End Role="tb_ehs_req_area_praram" EntitySet="tb_ehs_req_area_praram" />
+            <End Role="tb_ehs_assessment_score_transaction" EntitySet="tb_ehs_assessment_score_transaction" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tb_ehs_assessment_score_transaction_tb_ehs_requirement_master" Association="Self.FK_tb_ehs_assessment_score_transaction_tb_ehs_requirement_master">
+            <End Role="tb_ehs_requirement_master" EntitySet="tb_ehs_requirement_master" />
+            <End Role="tb_ehs_assessment_score_transaction" EntitySet="tb_ehs_assessment_score_transaction" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tb_ehs_req_area_praram_tb_ehs_req_area" Association="Self.FK_tb_ehs_req_area_praram_tb_ehs_req_area">
+            <End Role="tb_ehs_req_area" EntitySet="tb_ehs_req_area" />
+            <End Role="tb_ehs_req_area_praram" EntitySet="tb_ehs_req_area_praram" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tb_ehs_req_area_praram_tb_ehs_requirement_master" Association="Self.FK_tb_ehs_req_area_praram_tb_ehs_requirement_master">
+            <End Role="tb_ehs_requirement_master" EntitySet="tb_ehs_requirement_master" />
+            <End Role="tb_ehs_req_area_praram" EntitySet="tb_ehs_req_area_praram" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tb_ehs_req_area_tb_ehs_requirement_master" Association="Self.FK_tb_ehs_req_area_tb_ehs_requirement_master">
+            <End Role="tb_ehs_requirement_master" EntitySet="tb_ehs_requirement_master" />
+            <End Role="tb_ehs_req_area" EntitySet="tb_ehs_req_area" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tb_project_tb_business_unit" Association="Self.FK_tb_project_tb_business_unit">
+            <End Role="tb_business_unit" EntitySet="tb_business_unit" />
+            <End Role="tb_project" EntitySet="tb_project" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tb_project_tb_region" Association="Self.FK_tb_project_tb_region">
+            <End Role="tb_region" EntitySet="tb_region" />
+            <End Role="tb_project" EntitySet="tb_project" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="SafetyAppDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="tb_business_unit">
+          <Key>
+            <PropertyRef Name="BusinessUnitID" />
+          </Key>
+          <Property Name="BusinessUnitID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BusinessUnitName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="BusinessUnitCategory" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="tb_project" Relationship="Self.FK_tb_project_tb_business_unit" FromRole="tb_business_unit" ToRole="tb_project" />
+        </EntityType>
+        <EntityType Name="tb_project">
+          <Key>
+            <PropertyRef Name="ProjectID" />
+          </Key>
+          <Property Name="ProjectID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProjectCode" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="ProjectName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="BusinessUnitID" Type="Int32" />
+          <Property Name="RegionID" Type="Int32" />
+          <Property Name="Location" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="tb_business_unit" Relationship="Self.FK_tb_project_tb_business_unit" FromRole="tb_project" ToRole="tb_business_unit" />
+          <NavigationProperty Name="tb_region" Relationship="Self.FK_tb_project_tb_region" FromRole="tb_project" ToRole="tb_region" />
+        </EntityType>
+        <EntityType Name="tb_region">
+          <Key>
+            <PropertyRef Name="RegionID" />
+          </Key>
+          <Property Name="RegionID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RegionName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="BusinessUnitID" Type="Int32" />
+          <Property Name="RM_BusinessUnit" Type="Int32" />
+          <Property Name="RM_Safety" Type="Int32" />
+          <NavigationProperty Name="tb_project" Relationship="Self.FK_tb_project_tb_region" FromRole="tb_region" ToRole="tb_project" />
+        </EntityType>
+        <EntityType Name="tb_user_profile">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="UserType" Type="Int32" />
+          <Property Name="UserEmail" Type="String" MaxLength="320" FixedLength="false" Unicode="false" />
+          <Property Name="UserMobileNo" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="UserProfilePic" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="UserPassword" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="UserBusinessUnitID" Type="Int32" />
+          <Property Name="UserRegionID" Type="Int32" />
+          <Property Name="UserProjectID" Type="Int32" />
+          <Property Name="UserStatus" Type="Int32" />
+          <Property Name="UserLastLoginOn" Type="DateTime" Precision="3" />
+          <Property Name="UserProfileLastModifyOn" Type="DateTime" Precision="3" />
+          <Property Name="UserVerificationCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="UserCreatedBy" Type="Int32" />
+          <Property Name="UserCreatedOn" Type="DateTime" Precision="3" />
+          <Property Name="UserApprovedBY" Type="Int32" />
+          <Property Name="UserApprovedOn" Type="DateTime" Precision="3" />
+          <Property Name="UserSignupOTP" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TncAcceptedOn" Type="DateTime" Precision="3" />
+          </EntityType>
+        <Association Name="FK_tb_project_tb_business_unit">
+          <End Role="tb_business_unit" Type="Self.tb_business_unit" Multiplicity="0..1" />
+          <End Role="tb_project" Type="Self.tb_project" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tb_business_unit">
+              <PropertyRef Name="BusinessUnitID" />
+            </Principal>
+            <Dependent Role="tb_project">
+              <PropertyRef Name="BusinessUnitID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tb_project_tb_region">
+          <End Role="tb_region" Type="Self.tb_region" Multiplicity="0..1" />
+          <End Role="tb_project" Type="Self.tb_project" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tb_region">
+              <PropertyRef Name="RegionID" />
+            </Principal>
+            <Dependent Role="tb_project">
+              <PropertyRef Name="RegionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="SafetyAppDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="tb_business_unit" EntityType="Self.tb_business_unit" />
+          <EntitySet Name="tb_project" EntityType="Self.tb_project" />
+          <EntitySet Name="tb_region" EntityType="Self.tb_region" />
+          <EntitySet Name="tb_user_profile" EntityType="Self.tb_user_profile" />
+          <AssociationSet Name="FK_tb_project_tb_business_unit" Association="Self.FK_tb_project_tb_business_unit">
+            <End Role="tb_business_unit" EntitySet="tb_business_unit" />
+            <End Role="tb_project" EntitySet="tb_project" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tb_project_tb_region" Association="Self.FK_tb_project_tb_region">
+            <End Role="tb_region" EntitySet="tb_region" />
+            <End Role="tb_project" EntitySet="tb_project" />
+          </AssociationSet>
+          <FunctionImport Name="spMisReportDataByID" ReturnType="Collection(SafetyAppDBModel.spMisReportDataByID_Result)">
+            <Parameter Name="MisReportID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="spMisReportDataByID1" ReturnType="Collection(SafetyAppDBModel.spMisReportDataByID1_Result)">
+            <Parameter Name="MisReportID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="spMisReportDataByID2" ReturnType="Collection(SafetyAppDBModel.spMisReportDataByID2_Result)">
+            <Parameter Name="MisReportID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="spMisReportDataByID3" ReturnType="Collection(SafetyAppDBModel.spMisReportDataByID3_Result)">
+          <Parameter Name="MisReportID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <EntitySet Name="tb_ehs_req_area" EntityType="SafetyAppDBModel.tb_ehs_req_area" />
+          <EntitySet Name="tb_ehs_req_area_praram" EntityType="SafetyAppDBModel.tb_ehs_req_area_praram" />
+          <EntitySet Name="tb_ehs_requirement_master" EntityType="SafetyAppDBModel.tb_ehs_requirement_master" />
+          <EntitySet Name="tb_ehs_scorecard_master" EntityType="SafetyAppDBModel.tb_ehs_scorecard_master" />
+          <AssociationSet Name="FK_tb_ehs_req_area_praram_tb_ehs_req_area" Association="SafetyAppDBModel.FK_tb_ehs_req_area_praram_tb_ehs_req_area">
+            <End Role="tb_ehs_req_area" EntitySet="tb_ehs_req_area" />
+            <End Role="tb_ehs_req_area_praram" EntitySet="tb_ehs_req_area_praram" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tb_ehs_req_area_tb_ehs_requirement_master" Association="SafetyAppDBModel.FK_tb_ehs_req_area_tb_ehs_requirement_master">
+            <End Role="tb_ehs_requirement_master" EntitySet="tb_ehs_requirement_master" />
+            <End Role="tb_ehs_req_area" EntitySet="tb_ehs_req_area" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tb_ehs_req_area_praram_tb_ehs_requirement_master" Association="SafetyAppDBModel.FK_tb_ehs_req_area_praram_tb_ehs_requirement_master">
+            <End Role="tb_ehs_requirement_master" EntitySet="tb_ehs_requirement_master" />
+            <End Role="tb_ehs_req_area_praram" EntitySet="tb_ehs_req_area_praram" />
+          </AssociationSet>
+          <EntitySet Name="tb_ehs_assessment_score" EntityType="SafetyAppDBModel.tb_ehs_assessment_score" />
+          <EntitySet Name="tb_ehs_assessment_score_neg" EntityType="SafetyAppDBModel.tb_ehs_assessment_score_neg" />
+          <EntitySet Name="tb_ehs_assessment_score_transaction" EntityType="SafetyAppDBModel.tb_ehs_assessment_score_transaction" />
+          <AssociationSet Name="FK_tb_ehs_assessment_score_neg_tb_ehs_assessment_score" Association="SafetyAppDBModel.FK_tb_ehs_assessment_score_neg_tb_ehs_assessment_score">
+            <End Role="tb_ehs_assessment_score" EntitySet="tb_ehs_assessment_score" />
+            <End Role="tb_ehs_assessment_score_neg" EntitySet="tb_ehs_assessment_score_neg" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tb_ehs_assessment_score_transaction_tb_ehs_assessment_score" Association="SafetyAppDBModel.FK_tb_ehs_assessment_score_transaction_tb_ehs_assessment_score">
+            <End Role="tb_ehs_assessment_score" EntitySet="tb_ehs_assessment_score" />
+            <End Role="tb_ehs_assessment_score_transaction" EntitySet="tb_ehs_assessment_score_transaction" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tb_ehs_assessment_score_transaction_tb_ehs_req_area" Association="SafetyAppDBModel.FK_tb_ehs_assessment_score_transaction_tb_ehs_req_area">
+            <End Role="tb_ehs_req_area" EntitySet="tb_ehs_req_area" />
+            <End Role="tb_ehs_assessment_score_transaction" EntitySet="tb_ehs_assessment_score_transaction" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tb_ehs_assessment_score_transaction_tb_ehs_req_area_praram" Association="SafetyAppDBModel.FK_tb_ehs_assessment_score_transaction_tb_ehs_req_area_praram">
+            <End Role="tb_ehs_req_area_praram" EntitySet="tb_ehs_req_area_praram" />
+            <End Role="tb_ehs_assessment_score_transaction" EntitySet="tb_ehs_assessment_score_transaction" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tb_ehs_assessment_score_transaction_tb_ehs_requirement_master" Association="SafetyAppDBModel.FK_tb_ehs_assessment_score_transaction_tb_ehs_requirement_master">
+            <End Role="tb_ehs_requirement_master" EntitySet="tb_ehs_requirement_master" />
+            <End Role="tb_ehs_assessment_score_transaction" EntitySet="tb_ehs_assessment_score_transaction" />
+          </AssociationSet>
+          </EntityContainer>
+        <ComplexType Name="spMisReportDataByID_Result">
+          <Property Type="Int32" Name="MisReportTransactionID" Nullable="false" />
+          <Property Type="Int32" Name="MisReportID" Nullable="true" />
+          <Property Type="Int32" Name="GroupParamCodeID" Nullable="true" />
+          <Property Type="Decimal" Name="InputValue" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="Int32" Name="MisReportID1" Nullable="false" />
+          <Property Type="Int32" Name="BusinessUnitID" Nullable="true" />
+          <Property Type="Int32" Name="RegionID" Nullable="true" />
+          <Property Type="Int32" Name="ProjectID" Nullable="true" />
+          <Property Type="String" Name="Location" Nullable="true" MaxLength="500" />
+          <Property Type="Int32" Name="ProjectManagerID" Nullable="true" />
+          <Property Type="Int32" Name="RegionalManagerID" Nullable="true" />
+          <Property Type="Int32" Name="Year" Nullable="true" />
+          <Property Type="Int32" Name="Month" Nullable="true" />
+          <Property Type="DateTime" Name="ReportDate" Nullable="true" Precision="23" />
+          <Property Type="Int32" Name="CreatedBy" Nullable="true" />
+          <Property Type="DateTime" Name="CreatedOn" Nullable="true" Precision="23" />
+          <Property Type="Int32" Name="Status" Nullable="true" />
+          <Property Type="Int32" Name="ApprovalBy" Nullable="true" />
+          <Property Type="DateTime" Name="ApprovedOn" Nullable="true" Precision="23" />
+          <Property Type="Int32" Name="GroupParamCodeID1" Nullable="false" />
+          <Property Type="Int32" Name="GroupParamID" Nullable="true" />
+          <Property Type="Int32" Name="GroupID" Nullable="true" />
+          <Property Type="String" Name="GroupParameterCode" Nullable="true" MaxLength="250" />
+          <Property Type="String" Name="Parameter1" Nullable="true" MaxLength="250" />
+          <Property Type="String" Name="Parameter2" Nullable="true" MaxLength="250" />
+          <Property Type="Int32" Name="GroupID1" Nullable="false" />
+          <Property Type="String" Name="GroupName" Nullable="true" MaxLength="250" />
+        </ComplexType>
+        <ComplexType Name="spMisReportDataByID1_Result">
+          <Property Type="String" Name="Parameter1" Nullable="true" MaxLength="250" />
+          <Property Type="String" Name="Parameter2" Nullable="true" MaxLength="250" />
+          <Property Type="Decimal" Name="InputValue" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="String" Name="GroupParameterCode" Nullable="true" MaxLength="250" />
+        </ComplexType>
+        <ComplexType Name="spMisReportDataByID2_Result">
+          <Property Type="String" Name="Parameter1" Nullable="true" MaxLength="250" />
+          <Property Type="String" Name="Parameter2" Nullable="true" MaxLength="250" />
+          <Property Type="Decimal" Name="InputValue" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="String" Name="GroupParameterCode" Nullable="true" MaxLength="250" />
+          <Property Type="String" Name="GroupName" Nullable="true" MaxLength="250" />
+        </ComplexType>
+        <ComplexType Name="spMisReportDataByID3_Result">
+          <Property Type="String" Name="Parameter1" Nullable="true" MaxLength="250" />
+          <Property Type="String" Name="Parameter2" Nullable="true" MaxLength="250" />
+          <Property Type="Decimal" Name="InputValue" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="String" Name="GroupParameterCode" Nullable="true" MaxLength="250" />
+          <Property Type="String" Name="GroupName" Nullable="true" MaxLength="250" />
+          <Property Type="Int32" Name="Month" Nullable="true" />
+        </ComplexType>
+        <EntityType Name="tb_ehs_req_area">
+          <Key>
+            <PropertyRef Name="AreaId" />
+          </Key>
+          <Property Name="AreaId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RequirementId" Type="Int32" Nullable="false" />
+          <Property Name="SrNo" Type="Decimal" Precision="5" Scale="2" />
+          <Property Name="AreaName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="TotalWeightagePerCriteria" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="ScoreCardID" Type="Int32" />
+          <NavigationProperty Name="tb_ehs_req_area_praram" Relationship="SafetyAppDBModel.FK_tb_ehs_req_area_praram_tb_ehs_req_area" FromRole="tb_ehs_req_area" ToRole="tb_ehs_req_area_praram" />
+          <NavigationProperty Name="tb_ehs_requirement_master" Relationship="SafetyAppDBModel.FK_tb_ehs_req_area_tb_ehs_requirement_master" FromRole="tb_ehs_req_area" ToRole="tb_ehs_requirement_master" />
+          <NavigationProperty Name="tb_ehs_assessment_score_transaction" Relationship="SafetyAppDBModel.FK_tb_ehs_assessment_score_transaction_tb_ehs_req_area" FromRole="tb_ehs_req_area" ToRole="tb_ehs_assessment_score_transaction" />
+        </EntityType>
+        <EntityType Name="tb_ehs_req_area_praram">
+          <Key>
+            <PropertyRef Name="ParamId" />
+          </Key>
+          <Property Name="ParamId" Type="Int32" Nullable="false" />
+          <Property Name="AreaId" Type="Int32" />
+          <Property Name="RequirementId" Type="Int32" />
+          <Property Name="ParameterName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="SubWeightagePerCriteria" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="ScoreCardID" Type="Int32" />
+          <NavigationProperty Name="tb_ehs_req_area" Relationship="SafetyAppDBModel.FK_tb_ehs_req_area_praram_tb_ehs_req_area" FromRole="tb_ehs_req_area_praram" ToRole="tb_ehs_req_area" />
+          <NavigationProperty Name="tb_ehs_requirement_master" Relationship="SafetyAppDBModel.FK_tb_ehs_req_area_praram_tb_ehs_requirement_master" FromRole="tb_ehs_req_area_praram" ToRole="tb_ehs_requirement_master" />
+          <NavigationProperty Name="tb_ehs_assessment_score_transaction" Relationship="SafetyAppDBModel.FK_tb_ehs_assessment_score_transaction_tb_ehs_req_area_praram" FromRole="tb_ehs_req_area_praram" ToRole="tb_ehs_assessment_score_transaction" />
+        </EntityType>
+        <EntityType Name="tb_ehs_requirement_master">
+          <Key>
+            <PropertyRef Name="RequirementId" />
+          </Key>
+          <Property Name="RequirementId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RequirementName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="ScoreCardID" Type="Int32" />
+          <NavigationProperty Name="tb_ehs_req_area" Relationship="SafetyAppDBModel.FK_tb_ehs_req_area_tb_ehs_requirement_master" FromRole="tb_ehs_requirement_master" ToRole="tb_ehs_req_area" />
+          <NavigationProperty Name="tb_ehs_req_area_praram" Relationship="SafetyAppDBModel.FK_tb_ehs_req_area_praram_tb_ehs_requirement_master" FromRole="tb_ehs_requirement_master" ToRole="tb_ehs_req_area_praram" />
+          <Property Name="RequirementSequenceNo" Type="Int32" />
+          <NavigationProperty Name="tb_ehs_assessment_score_transaction" Relationship="SafetyAppDBModel.FK_tb_ehs_assessment_score_transaction_tb_ehs_requirement_master" FromRole="tb_ehs_requirement_master" ToRole="tb_ehs_assessment_score_transaction" />
+        </EntityType>
+        <EntityType Name="tb_ehs_scorecard_master">
+          <Key>
+            <PropertyRef Name="ScoreCardID" />
+          </Key>
+          <Property Name="ScoreCardID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ScoreCardName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="ApplicableBusinessUnits" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <Association Name="FK_tb_ehs_req_area_praram_tb_ehs_req_area">
+          <End Type="SafetyAppDBModel.tb_ehs_req_area" Role="tb_ehs_req_area" Multiplicity="0..1" />
+          <End Type="SafetyAppDBModel.tb_ehs_req_area_praram" Role="tb_ehs_req_area_praram" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tb_ehs_req_area">
+              <PropertyRef Name="AreaId" />
+            </Principal>
+            <Dependent Role="tb_ehs_req_area_praram">
+              <PropertyRef Name="AreaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tb_ehs_req_area_tb_ehs_requirement_master">
+          <End Type="SafetyAppDBModel.tb_ehs_requirement_master" Role="tb_ehs_requirement_master" Multiplicity="1" />
+          <End Type="SafetyAppDBModel.tb_ehs_req_area" Role="tb_ehs_req_area" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tb_ehs_requirement_master">
+              <PropertyRef Name="RequirementId" />
+            </Principal>
+            <Dependent Role="tb_ehs_req_area">
+              <PropertyRef Name="RequirementId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tb_ehs_req_area_praram_tb_ehs_requirement_master">
+          <End Type="SafetyAppDBModel.tb_ehs_requirement_master" Role="tb_ehs_requirement_master" Multiplicity="0..1" />
+          <End Type="SafetyAppDBModel.tb_ehs_req_area_praram" Role="tb_ehs_req_area_praram" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tb_ehs_requirement_master">
+              <PropertyRef Name="RequirementId" />
+            </Principal>
+            <Dependent Role="tb_ehs_req_area_praram">
+              <PropertyRef Name="RequirementId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="tb_ehs_assessment_score">
+          <Key>
+            <PropertyRef Name="EhsAssesmentId" />
+          </Key>
+          <Property Name="EhsAssesmentId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BusinessUnitID" Type="Int32" />
+          <Property Name="RegionID" Type="Int32" />
+          <Property Name="ProjectID" Type="Int32" />
+          <Property Name="AssessmentDate" Type="DateTime" Precision="3" />
+          <Property Name="AssessmentBy" Type="Int32" Nullable="false" />
+          <Property Name="Location" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="NoOfWorkMan" Type="Int32" />
+          <Property Name="ProjectManagerID" Type="Int32" Nullable="false" />
+          <Property Name="RegionalManagerID" Type="Int32" Nullable="false" />
+          <Property Name="PCH" Type="Int32" Nullable="false" />
+          <Property Name="ScorecardID" Type="Int32" />
+          <Property Name="RmEHSID" Type="Int32" />
+          <Property Name="CorpEHSID" Type="Int32" />
+          <Property Name="RequirementStatusID" Type="Int32" />
+          <Property Name="Status" Type="Int32" />
+          <NavigationProperty Name="tb_ehs_assessment_score_neg" Relationship="SafetyAppDBModel.FK_tb_ehs_assessment_score_neg_tb_ehs_assessment_score" FromRole="tb_ehs_assessment_score" ToRole="tb_ehs_assessment_score_neg" />
+          <NavigationProperty Name="tb_ehs_assessment_score_transaction" Relationship="SafetyAppDBModel.FK_tb_ehs_assessment_score_transaction_tb_ehs_assessment_score" FromRole="tb_ehs_assessment_score" ToRole="tb_ehs_assessment_score_transaction" />
+        </EntityType>
+        <EntityType Name="tb_ehs_assessment_score_neg">
+          <Key>
+            <PropertyRef Name="EhsNegScoreId" />
+          </Key>
+          <Property Name="EhsNegScoreId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EhsAssesmentId" Type="Int32" />
+          <Property Name="IrType" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="NegativeMarking" Type="Int32" />
+          <Property Name="ActualDeduction" Type="Int32" />
+          <Property Name="Marking" Type="Int32" />
+          <Property Name="Remark" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="tb_ehs_assessment_score" Relationship="SafetyAppDBModel.FK_tb_ehs_assessment_score_neg_tb_ehs_assessment_score" FromRole="tb_ehs_assessment_score_neg" ToRole="tb_ehs_assessment_score" />
+        </EntityType>
+        <EntityType Name="tb_ehs_assessment_score_transaction">
+          <Key>
+            <PropertyRef Name="EhsAssesmentTransactionID" />
+          </Key>
+          <Property Name="EhsAssesmentTransactionID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EhsAssesmentID" Type="Int32" />
+          <Property Name="RequirementID" Type="Int32" />
+          <Property Name="AreaID" Type="Int32" />
+          <Property Name="ParamID" Type="Int32" />
+          <Property Name="IsApplicable" Type="Boolean" />
+          <Property Name="ApplicableWeightage" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="PercentageCompliance" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Compliance" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Remark" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="AssessorApplicableWeightage" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="AssessorPercentageCompliance" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="AccessorCompliance" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="AccessorRemark" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Assessor1ApplicableWeightage" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Assessor1PercentageCompliance" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Accessor1Compliance" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Accessor1Remark" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="tb_ehs_assessment_score" Relationship="SafetyAppDBModel.FK_tb_ehs_assessment_score_transaction_tb_ehs_assessment_score" FromRole="tb_ehs_assessment_score_transaction" ToRole="tb_ehs_assessment_score" />
+          <NavigationProperty Name="tb_ehs_req_area" Relationship="SafetyAppDBModel.FK_tb_ehs_assessment_score_transaction_tb_ehs_req_area" FromRole="tb_ehs_assessment_score_transaction" ToRole="tb_ehs_req_area" />
+          <NavigationProperty Name="tb_ehs_req_area_praram" Relationship="SafetyAppDBModel.FK_tb_ehs_assessment_score_transaction_tb_ehs_req_area_praram" FromRole="tb_ehs_assessment_score_transaction" ToRole="tb_ehs_req_area_praram" />
+          <NavigationProperty Name="tb_ehs_requirement_master" Relationship="SafetyAppDBModel.FK_tb_ehs_assessment_score_transaction_tb_ehs_requirement_master" FromRole="tb_ehs_assessment_score_transaction" ToRole="tb_ehs_requirement_master" />
+        </EntityType>
+        <Association Name="FK_tb_ehs_assessment_score_neg_tb_ehs_assessment_score">
+          <End Type="SafetyAppDBModel.tb_ehs_assessment_score" Role="tb_ehs_assessment_score" Multiplicity="0..1" />
+          <End Type="SafetyAppDBModel.tb_ehs_assessment_score_neg" Role="tb_ehs_assessment_score_neg" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tb_ehs_assessment_score">
+              <PropertyRef Name="EhsAssesmentId" />
+            </Principal>
+            <Dependent Role="tb_ehs_assessment_score_neg">
+              <PropertyRef Name="EhsAssesmentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tb_ehs_assessment_score_transaction_tb_ehs_assessment_score">
+          <End Type="SafetyAppDBModel.tb_ehs_assessment_score" Role="tb_ehs_assessment_score" Multiplicity="0..1" />
+          <End Type="SafetyAppDBModel.tb_ehs_assessment_score_transaction" Role="tb_ehs_assessment_score_transaction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tb_ehs_assessment_score">
+              <PropertyRef Name="EhsAssesmentId" />
+            </Principal>
+            <Dependent Role="tb_ehs_assessment_score_transaction">
+              <PropertyRef Name="EhsAssesmentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tb_ehs_assessment_score_transaction_tb_ehs_req_area">
+          <End Type="SafetyAppDBModel.tb_ehs_req_area" Role="tb_ehs_req_area" Multiplicity="0..1" />
+          <End Type="SafetyAppDBModel.tb_ehs_assessment_score_transaction" Role="tb_ehs_assessment_score_transaction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tb_ehs_req_area">
+              <PropertyRef Name="AreaId" />
+            </Principal>
+            <Dependent Role="tb_ehs_assessment_score_transaction">
+              <PropertyRef Name="AreaID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tb_ehs_assessment_score_transaction_tb_ehs_req_area_praram">
+          <End Type="SafetyAppDBModel.tb_ehs_req_area_praram" Role="tb_ehs_req_area_praram" Multiplicity="0..1" />
+          <End Type="SafetyAppDBModel.tb_ehs_assessment_score_transaction" Role="tb_ehs_assessment_score_transaction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tb_ehs_req_area_praram">
+              <PropertyRef Name="ParamId" />
+            </Principal>
+            <Dependent Role="tb_ehs_assessment_score_transaction">
+              <PropertyRef Name="ParamID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tb_ehs_assessment_score_transaction_tb_ehs_requirement_master">
+          <End Type="SafetyAppDBModel.tb_ehs_requirement_master" Role="tb_ehs_requirement_master" Multiplicity="0..1" />
+          <End Type="SafetyAppDBModel.tb_ehs_assessment_score_transaction" Role="tb_ehs_assessment_score_transaction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tb_ehs_requirement_master">
+              <PropertyRef Name="RequirementId" />
+            </Principal>
+            <Dependent Role="tb_ehs_assessment_score_transaction">
+              <PropertyRef Name="RequirementID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="SafetyAppDBModelStoreContainer" CdmEntityContainer="SafetyAppDBEntities">
+          <EntitySetMapping Name="tb_business_unit">
+            <EntityTypeMapping TypeName="SafetyAppDBModel.tb_business_unit">
+              <MappingFragment StoreEntitySet="tb_business_unit">
+                <ScalarProperty Name="BusinessUnitID" ColumnName="BusinessUnitID" />
+                <ScalarProperty Name="BusinessUnitName" ColumnName="BusinessUnitName" />
+                <ScalarProperty Name="BusinessUnitCategory" ColumnName="BusinessUnitCategory" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tb_project">
+            <EntityTypeMapping TypeName="SafetyAppDBModel.tb_project">
+              <MappingFragment StoreEntitySet="tb_project">
+                <ScalarProperty Name="ProjectID" ColumnName="ProjectID" />
+                <ScalarProperty Name="ProjectCode" ColumnName="ProjectCode" />
+                <ScalarProperty Name="ProjectName" ColumnName="ProjectName" />
+                <ScalarProperty Name="BusinessUnitID" ColumnName="BusinessUnitID" />
+                <ScalarProperty Name="RegionID" ColumnName="RegionID" />
+                <ScalarProperty Name="Location" ColumnName="Location" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tb_region">
+            <EntityTypeMapping TypeName="SafetyAppDBModel.tb_region">
+              <MappingFragment StoreEntitySet="tb_region">
+                <ScalarProperty Name="RegionID" ColumnName="RegionID" />
+                <ScalarProperty Name="RegionName" ColumnName="RegionName" />
+                <ScalarProperty Name="BusinessUnitID" ColumnName="BusinessUnitID" />
+                <ScalarProperty Name="RM_BusinessUnit" ColumnName="RM_BusinessUnit" />
+                <ScalarProperty Name="RM_Safety" ColumnName="RM_Safety" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tb_user_profile">
+            <EntityTypeMapping TypeName="SafetyAppDBModel.tb_user_profile">
+              <MappingFragment StoreEntitySet="tb_user_profile">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="UserType" ColumnName="UserType" />
+                <ScalarProperty Name="UserEmail" ColumnName="UserEmail" />
+                <ScalarProperty Name="UserMobileNo" ColumnName="UserMobileNo" />
+                <ScalarProperty Name="UserProfilePic" ColumnName="UserProfilePic" />
+                <ScalarProperty Name="UserPassword" ColumnName="UserPassword" />
+                <ScalarProperty Name="UserBusinessUnitID" ColumnName="UserBusinessUnitID" />
+                <ScalarProperty Name="UserRegionID" ColumnName="UserRegionID" />
+                <ScalarProperty Name="UserProjectID" ColumnName="UserProjectID" />
+                <ScalarProperty Name="UserStatus" ColumnName="UserStatus" />
+                <ScalarProperty Name="UserLastLoginOn" ColumnName="UserLastLoginOn" />
+                <ScalarProperty Name="UserProfileLastModifyOn" ColumnName="UserProfileLastModifyOn" />
+                <ScalarProperty Name="UserVerificationCode" ColumnName="UserVerificationCode" />
+                <ScalarProperty Name="UserCreatedBy" ColumnName="UserCreatedBy" />
+                <ScalarProperty Name="UserCreatedOn" ColumnName="UserCreatedOn" />
+                <ScalarProperty Name="UserApprovedBY" ColumnName="UserApprovedBY" />
+                <ScalarProperty Name="UserApprovedOn" ColumnName="UserApprovedOn" />
+                <ScalarProperty Name="UserSignupOTP" ColumnName="UserSignupOTP" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="TncAcceptedOn" ColumnName="TncAcceptedOn" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="spMisReportDataByID3" FunctionName="SafetyAppDBModel.Store.spMisReportDataByID">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SafetyAppDBModel.spMisReportDataByID3_Result">
+                <ScalarProperty Name="Parameter1" ColumnName="Parameter1" />
+                <ScalarProperty Name="Parameter2" ColumnName="Parameter2" />
+                <ScalarProperty Name="InputValue" ColumnName="InputValue" />
+                <ScalarProperty Name="GroupParameterCode" ColumnName="GroupParameterCode" />
+                <ScalarProperty Name="GroupName" ColumnName="GroupName" />
+                <ScalarProperty Name="Month" ColumnName="Month" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <EntitySetMapping Name="tb_ehs_req_area">
+            <EntityTypeMapping TypeName="SafetyAppDBModel.tb_ehs_req_area">
+              <MappingFragment StoreEntitySet="tb_ehs_req_area">
+                <ScalarProperty Name="ScoreCardID" ColumnName="ScoreCardID" />
+                <ScalarProperty Name="TotalWeightagePerCriteria" ColumnName="TotalWeightagePerCriteria" />
+                <ScalarProperty Name="AreaName" ColumnName="AreaName" />
+                <ScalarProperty Name="SrNo" ColumnName="SrNo" />
+                <ScalarProperty Name="RequirementId" ColumnName="RequirementId" />
+                <ScalarProperty Name="AreaId" ColumnName="AreaId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tb_ehs_req_area_praram">
+            <EntityTypeMapping TypeName="SafetyAppDBModel.tb_ehs_req_area_praram">
+              <MappingFragment StoreEntitySet="tb_ehs_req_area_praram">
+                <ScalarProperty Name="ScoreCardID" ColumnName="ScoreCardID" />
+                <ScalarProperty Name="SubWeightagePerCriteria" ColumnName="SubWeightagePerCriteria" />
+                <ScalarProperty Name="ParameterName" ColumnName="ParameterName" />
+                <ScalarProperty Name="RequirementId" ColumnName="RequirementId" />
+                <ScalarProperty Name="AreaId" ColumnName="AreaId" />
+                <ScalarProperty Name="ParamId" ColumnName="ParamId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tb_ehs_requirement_master">
+            <EntityTypeMapping TypeName="SafetyAppDBModel.tb_ehs_requirement_master">
+              <MappingFragment StoreEntitySet="tb_ehs_requirement_master">
+                <ScalarProperty Name="RequirementSequenceNo" ColumnName="RequirementSequenceNo" />
+                <ScalarProperty Name="ScoreCardID" ColumnName="ScoreCardID" />
+                <ScalarProperty Name="RequirementName" ColumnName="RequirementName" />
+                <ScalarProperty Name="RequirementId" ColumnName="RequirementId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tb_ehs_scorecard_master">
+            <EntityTypeMapping TypeName="SafetyAppDBModel.tb_ehs_scorecard_master">
+              <MappingFragment StoreEntitySet="tb_ehs_scorecard_master">
+                <ScalarProperty Name="ApplicableBusinessUnits" ColumnName="ApplicableBusinessUnits" />
+                <ScalarProperty Name="ScoreCardName" ColumnName="ScoreCardName" />
+                <ScalarProperty Name="ScoreCardID" ColumnName="ScoreCardID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tb_ehs_assessment_score">
+            <EntityTypeMapping TypeName="SafetyAppDBModel.tb_ehs_assessment_score">
+              <MappingFragment StoreEntitySet="tb_ehs_assessment_score">
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="RequirementStatusID" ColumnName="RequirementStatusID" />
+                <ScalarProperty Name="CorpEHSID" ColumnName="CorpEHSID" />
+                <ScalarProperty Name="RmEHSID" ColumnName="RmEHSID" />
+                <ScalarProperty Name="ScorecardID" ColumnName="ScorecardID" />
+                <ScalarProperty Name="PCH" ColumnName="PCH" />
+                <ScalarProperty Name="RegionalManagerID" ColumnName="RegionalManagerID" />
+                <ScalarProperty Name="ProjectManagerID" ColumnName="ProjectManagerID" />
+                <ScalarProperty Name="NoOfWorkMan" ColumnName="NoOfWorkMan" />
+                <ScalarProperty Name="Location" ColumnName="Location" />
+                <ScalarProperty Name="AssessmentBy" ColumnName="AssessmentBy" />
+                <ScalarProperty Name="AssessmentDate" ColumnName="AssessmentDate" />
+                <ScalarProperty Name="ProjectID" ColumnName="ProjectID" />
+                <ScalarProperty Name="RegionID" ColumnName="RegionID" />
+                <ScalarProperty Name="BusinessUnitID" ColumnName="BusinessUnitID" />
+                <ScalarProperty Name="EhsAssesmentId" ColumnName="EhsAssesmentId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tb_ehs_assessment_score_neg">
+            <EntityTypeMapping TypeName="SafetyAppDBModel.tb_ehs_assessment_score_neg">
+              <MappingFragment StoreEntitySet="tb_ehs_assessment_score_neg">
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="Marking" ColumnName="Marking" />
+                <ScalarProperty Name="ActualDeduction" ColumnName="ActualDeduction" />
+                <ScalarProperty Name="NegativeMarking" ColumnName="NegativeMarking" />
+                <ScalarProperty Name="IrType" ColumnName="IrType" />
+                <ScalarProperty Name="EhsAssesmentId" ColumnName="EhsAssesmentId" />
+                <ScalarProperty Name="EhsNegScoreId" ColumnName="EhsNegScoreId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tb_ehs_assessment_score_transaction">
+            <EntityTypeMapping TypeName="SafetyAppDBModel.tb_ehs_assessment_score_transaction">
+              <MappingFragment StoreEntitySet="tb_ehs_assessment_score_transaction">
+                <ScalarProperty Name="Accessor1Remark" ColumnName="Accessor1Remark" />
+                <ScalarProperty Name="Accessor1Compliance" ColumnName="Accessor1Compliance" />
+                <ScalarProperty Name="Assessor1PercentageCompliance" ColumnName="Assessor1PercentageCompliance" />
+                <ScalarProperty Name="Assessor1ApplicableWeightage" ColumnName="Assessor1ApplicableWeightage" />
+                <ScalarProperty Name="AccessorRemark" ColumnName="AccessorRemark" />
+                <ScalarProperty Name="AccessorCompliance" ColumnName="AccessorCompliance" />
+                <ScalarProperty Name="AssessorPercentageCompliance" ColumnName="AssessorPercentageCompliance" />
+                <ScalarProperty Name="AssessorApplicableWeightage" ColumnName="AssessorApplicableWeightage" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="Compliance" ColumnName="Compliance" />
+                <ScalarProperty Name="PercentageCompliance" ColumnName="PercentageCompliance" />
+                <ScalarProperty Name="ApplicableWeightage" ColumnName="ApplicableWeightage" />
+                <ScalarProperty Name="IsApplicable" ColumnName="IsApplicable" />
+                <ScalarProperty Name="ParamID" ColumnName="ParamID" />
+                <ScalarProperty Name="AreaID" ColumnName="AreaID" />
+                <ScalarProperty Name="RequirementID" ColumnName="RequirementID" />
+                <ScalarProperty Name="EhsAssesmentID" ColumnName="EhsAssesmentID" />
+                <ScalarProperty Name="EhsAssesmentTransactionID" ColumnName="EhsAssesmentTransactionID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

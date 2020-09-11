@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="e0ca08df330342a29cf28f5396a7c812" Name="Diagram1">
+        <EntityTypeShape EntityType="SafetyAppDBModel.tb_business_unit" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SafetyAppDBModel.tb_project" Width="1.5" PointX="0.75" PointY="10.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="SafetyAppDBModel.tb_region" Width="1.5" PointX="1.5" PointY="14.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="SafetyAppDBModel.tb_user_profile" Width="1.5" PointX="0.75" PointY="3.625" IsExpanded="true" />
+        <AssociationConnector Association="SafetyAppDBModel.FK_tb_project_tb_business_unit" ManuallyRouted="false" />
+        <AssociationConnector Association="SafetyAppDBModel.FK_tb_project_tb_region" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="SafetyAppDBModel.tb_ehs_req_area" Width="1.5" PointX="5.625" PointY="2.5" />
+        <EntityTypeShape EntityType="SafetyAppDBModel.tb_ehs_req_area_praram" Width="1.5" PointX="7.875" PointY="2.5" />
+        <EntityTypeShape EntityType="SafetyAppDBModel.tb_ehs_requirement_master" Width="1.5" PointX="3.375" PointY="2.75" />
+        <EntityTypeShape EntityType="SafetyAppDBModel.tb_ehs_scorecard_master" Width="1.5" PointX="3.375" PointY="6.75" />
+        <AssociationConnector Association="SafetyAppDBModel.FK_tb_ehs_req_area_praram_tb_ehs_req_area" />
+        <AssociationConnector Association="SafetyAppDBModel.FK_tb_ehs_req_area_tb_ehs_requirement_master" />
+        <AssociationConnector Association="SafetyAppDBModel.FK_tb_ehs_req_area_praram_tb_ehs_requirement_master" />
+        <EntityTypeShape EntityType="SafetyAppDBModel.tb_ehs_assessment_score" Width="1.5" PointX="6.25" PointY="9.375" />
+        <EntityTypeShape EntityType="SafetyAppDBModel.tb_ehs_assessment_score_neg" Width="1.5" PointX="10.5" PointY="9.25" />
+        <EntityTypeShape EntityType="SafetyAppDBModel.tb_ehs_assessment_score_transaction" Width="1.5" PointX="13.125" PointY="1.375" />
+        <AssociationConnector Association="SafetyAppDBModel.FK_tb_ehs_assessment_score_neg_tb_ehs_assessment_score" />
+        <AssociationConnector Association="SafetyAppDBModel.FK_tb_ehs_assessment_score_transaction_tb_ehs_assessment_score" />
+        <AssociationConnector Association="SafetyAppDBModel.FK_tb_ehs_assessment_score_transaction_tb_ehs_req_area" />
+        <AssociationConnector Association="SafetyAppDBModel.FK_tb_ehs_assessment_score_transaction_tb_ehs_req_area_praram" />
+        <AssociationConnector Association="SafetyAppDBModel.FK_tb_ehs_assessment_score_transaction_tb_ehs_requirement_master" />
+        </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

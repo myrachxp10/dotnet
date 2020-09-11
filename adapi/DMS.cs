@@ -9,6 +9,8 @@ using System.IO;
 using System.Net;
 using System.Drawing;
 using static System.Net.WebRequestMethods;
+using System.Data;
+using File = System.IO.File;
 
 namespace adapi
 {
@@ -39,9 +41,13 @@ namespace adapi
             return rval;
 
         }
-            public string UploadToDMS(string fileByteString, string _docLib, string folderName, string fileName)
+
+       
+
+        public string UploadToDMS(string fileByteString, string _docLib, string folderName, string fileName)
         {
 
+            WriteToFile("File :" + fileName);
             string rval = string.Empty;
             byte[] tempBytes = Convert.FromBase64String(fileByteString);
 
@@ -61,25 +67,34 @@ namespace adapi
                     clientContext.ExecuteQuery();
                     using (Stream stream = new MemoryStream(tempBytes))
                     {
+
                         try
                         {
                             Microsoft.SharePoint.Client.File.SaveBinaryDirect(clientContext, list.RootFolder.ServerRelativeUrl.ToString() + "/" + folderName + "/" + fileName, stream, true);
                             rval = docURL;
+                            WriteToFile("Upload successful: " + rval);
                         }
                         catch (Exception ex)
                         {
                             rval = "Error occured: " + ex.ToString();
+                            WriteToFile("Upload failed: " + ex.ToString());
                         }
                     }
                 }
                 catch (Exception e) {
                     rval = UploadToDMSLocal(fileByteString, _docLib, folderName, fileName);
+                    WriteToFile("SPUpload failed: " + e.ToString());
+
                 }
             }
             return rval;
         }
 
         public string Tobase64Str(string Path) {
+            byte[] AsBytes = System.IO.File.ReadAllBytes(Path);
+            String AsBase64String = Convert.ToBase64String(AsBytes);
+            return AsBase64String;
+            /*
             using (Image image = Image.FromFile(Path))
             {
                 using (MemoryStream m = new MemoryStream())
@@ -92,6 +107,7 @@ namespace adapi
                     return base64String;
                 }
             }
+            */
         }
 
         public string DeleteDOC(string _docURL)
@@ -135,6 +151,27 @@ namespace adapi
                 rval = ex.ToString();
             }
             return rval;
+        }
+
+        public void WriteToFile(string s)
+        {
+            string logpath = ConfigurationManager.AppSettings["adlog"].ToString() + "\\dmslog_" + DateTime.Now.ToString("ddMMyyyy") + ".txt";
+            string timestamp = DateTime.Now.ToString("dd-MM-yyyy hh:mm:s");
+            if (!File.Exists(logpath))
+            {
+                System.IO.File.Create(logpath).Close();
+                using (StreamWriter sw = System.IO.File.AppendText(logpath))
+                {
+                    sw.WriteLine(timestamp + " : " + s);
+                }
+            }
+            else
+            {
+                using (StreamWriter sw = File.AppendText(logpath))
+                {
+                    sw.WriteLine(timestamp + " : " + s);
+                }
+            }
         }
 
         public class dmsDoc {
